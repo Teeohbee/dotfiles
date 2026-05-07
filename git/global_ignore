@@ -1,0 +1,41 @@
+#
+# OS generated files
+#
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+tags
+#
+# Vim generated files
+#
+.*.sw[a-z]
+*.un~
+Session.vim
+.netrwhist
+# emacs backups
+*~
+#
+# SublimeText project files
+#
+*.sublime-workspace
+*.sublime-project
+#
+# TextMate project files
+#
+*.tmproj
+*.tmproject
+tmtags
+#
+# Intellij project files
+#
+.idea/*
+*.iml
+#
+# Claude Code local settings
+#
+**/.claude/settings.local.json

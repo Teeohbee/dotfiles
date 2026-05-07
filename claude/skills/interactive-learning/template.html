@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} - Interactive Workshop</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-hover: #222639;
+    --border: #2a2e3f;
+    --text: #c9cdd8;
+    --text-muted: #6b7280;
+    --heading: #edf0f7;
+    --accent: #60a5fa;
+    --accent-dim: #60a5fa30;
+    --green: #4ade80;
+    --green-dim: #4ade8020;
+    --yellow: #facc15;
+    --yellow-dim: #facc1520;
+    --red: #f87171;
+    --red-dim: #f8717120;
+    --purple: #a78bfa;
+    --purple-dim: #a78bfa20;
+    --dim: #6b7280;
+    --sidebar-w: 220px;
+  }
+
+  html.light {
+    --bg: #f8f9fc;
+    --surface: #ffffff;
+    --surface-hover: #f0f1f5;
+    --border: #d1d5db;
+    --text: #374151;
+    --text-muted: #6b7280;
+    --heading: #111827;
+    --accent: #2563eb;
+    --accent-dim: #2563eb18;
+    --green: #16a34a;
+    --green-dim: #16a34a18;
+    --yellow: #ca8a04;
+    --yellow-dim: #ca8a0418;
+    --red: #dc2626;
+    --red-dim: #dc262618;
+    --purple: #7c3aed;
+    --purple-dim: #7c3aed18;
+    --dim: #9ca3af;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0 0 5rem;
+  }
+
+  /* ── Page header (full width, centered) ── */
+  .page-header {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 0 calc(var(--sidebar-w) + 3rem + 2rem);
+  }
+
+  /* ── Two-column layout ── */
+  .layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    align-items: start;
+  }
+
+  /* ── Sidebar / TOC ── */
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+    padding-top: 1rem;
+  }
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+  .toc-title {
+    color: var(--heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+  .toc a {
+    color: var(--text-muted);
+    text-decoration: none;
+    display: block;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.85rem;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    border-radius: 0 4px 4px 0;
+  }
+  .toc a:hover { color: var(--text); background: var(--surface-hover); }
+  .toc a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  /* ── Main content ── */
+  .main {
+    min-width: 0;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+  /* Readable prose width */
+  .main > p,
+  .main > ul,
+  .main > ol,
+  .reveal-content > p,
+  .reveal-content > ul,
+  .reveal-content > ol,
+  .deeper-content > p,
+  .deeper-content > ul { max-width: 70ch; }
+
+  h1 { color: var(--heading); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  h2 { color: var(--heading); font-size: 1.5rem; margin: 3rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  h2:first-child { margin-top: 0; border-top: none; padding-top: 0; }
+  h3 { color: var(--heading); font-size: 1.15rem; margin: 1.5rem 0 0.75rem; }
+  p { margin-bottom: 1rem; }
+  code { background: var(--surface); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em; color: var(--accent); }
+  pre { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.5; }
+  pre code { background: none; padding: 0; color: var(--text); }
+  a { color: var(--accent); }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  strong { color: var(--heading); }
+
+  .subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 0; }
+  .tag { display: inline-block; padding: 0.15em 0.6em; border-radius: 99px; font-size: 0.75rem; font-weight: 600; }
+  .tag-blue { background: var(--accent-dim); color: var(--accent); }
+  .tag-green { background: var(--green-dim); color: var(--green); }
+  .tag-yellow { background: var(--yellow-dim); color: var(--yellow); }
+  .tag-red { background: var(--red-dim); color: var(--red); }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); }
+
+  /* ── Decisions grid (2-col) ── */
+  .decisions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  /* ── Scenario blocks ── */
+  .scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  .scenario-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .scenario-number {
+    background: var(--accent-dim);
+    color: var(--accent);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .scenario-title { color: var(--heading); font-size: 1.1rem; font-weight: 600; }
+  .scenario-prompt { color: var(--text-muted); font-style: italic; margin: 0; }
+
+  /* Side-by-side prompt + notepad */
+  .scenario-interact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+    margin: 1rem 0;
+  }
+  .scenario-interact .notepad { margin: 0; min-height: 100px; }
+
+  /* ── Reveal toggle ── */
+  .reveal-btn {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+  }
+  .reveal-btn:hover { background: var(--accent); color: var(--bg); }
+  .reveal-content {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .reveal-content.open { display: block; }
+
+  /* ── Deeper dive ── */
+  .deeper {
+    background: var(--purple-dim);
+    border: 1px solid #a78bfa40;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+  .deeper-btn {
+    background: none;
+    border: none;
+    color: var(--purple);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    width: 100%;
+    text-align: left;
+  }
+  .deeper-btn:hover { text-decoration: underline; }
+  .deeper-content { display: none; padding: 0 1rem 1rem; }
+  .deeper-content.open { display: block; }
+
+  /* ── Quiz ── */
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+    align-items: start;
+  }
+  .quiz {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 0;
+  }
+  .quiz-label {
+    display: inline-block;
+    background: var(--green-dim);
+    color: var(--green);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2em 0.6em;
+    border-radius: 99px;
+    margin-bottom: 0.5rem;
+  }
+  .quiz-question { color: var(--heading); font-weight: 600; margin-bottom: 0.75rem; font-size: 0.95rem; }
+  .quiz-options { list-style: none; margin: 0; padding: 0; }
+  .quiz-option {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+  }
+  .quiz-option:hover { border-color: var(--accent); background: var(--accent-dim); }
+  .quiz-option.selected { border-color: var(--accent); background: var(--accent-dim); }
+  .quiz-option.correct { border-color: var(--green); background: var(--green-dim); }
+  .quiz-option.incorrect { border-color: var(--red); background: var(--red-dim); }
+  .quiz-option.correct-reveal { border-color: var(--green); background: var(--green-dim); opacity: 0.7; }
+  .quiz-letter {
+    background: var(--surface);
+    color: var(--text-muted);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .quiz-option.correct .quiz-letter { background: var(--green-dim); color: var(--green); }
+  .quiz-option.incorrect .quiz-letter { background: var(--red-dim); color: var(--red); }
+  .quiz-explanation {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  .quiz-explanation.visible { display: block; }
+  .quiz-locked .quiz-option { cursor: default; pointer-events: none; }
+
+  /* ── Discussion prompt ── */
+  .discussion {
+    background: var(--yellow-dim);
+    border: 1px solid #facc1540;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  .discussion-label { color: var(--yellow); font-weight: 700; margin-bottom: 0.25rem; }
+
+  /* ── Notepad ── */
+  .notepad {
+    width: 100%;
+    min-height: 80px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    margin: 0.75rem 0;
+  }
+  .notepad:focus { outline: none; border-color: var(--accent); }
+  .notepad::placeholder { color: var(--text-muted); }
+
+  /* ── Score tracker ── */
+  .score-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 0.85rem;
+    z-index: 100;
+  }
+  .score-item { display: flex; align-items: center; gap: 0.4rem; }
+  .score-value { color: var(--heading); font-weight: 700; }
+  .score-actions { display: flex; gap: 0.5rem; margin-left: auto; }
+  .score-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    transition: all 0.2s;
+  }
+  .score-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .score-btn.saved { border-color: var(--green); color: var(--green); }
+  .theme-toggle { border-style: dashed; }
+  .score-status {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    align-self: center;
+  }
+
+  /* ── Mermaid diagram wrapper ── */
+  .mermaid-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+  }
+</style>
+<script>
+  if (localStorage.getItem('workshop-theme') === 'light' ||
+      (!localStorage.getItem('workshop-theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+    document.documentElement.classList.add('light');
+  }
+</script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  const diagrams = [];
+  document.querySelectorAll('.mermaid-wrapper').forEach(w => {
+    diagrams.push({ wrapper: w, source: w.innerHTML });
+  });
+
+  const shared = { flowchart: { useMaxWidth: false }, sequence: { useMaxWidth: false },
+    themeVariables: { fontSize: '16px', fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, sans-serif' }};
+
+  const darkTheme = { theme: 'dark', flowchart: shared.flowchart, sequence: shared.sequence,
+    themeVariables: { ...shared.themeVariables,
+      darkMode: true, background: '#1a1d27',
+      primaryColor: '#60a5fa30', primaryTextColor: '#edf0f7', primaryBorderColor: '#60a5fa',
+      secondaryColor: '#4ade8020', secondaryTextColor: '#c9cdd8', secondaryBorderColor: '#4ade80',
+      tertiaryColor: '#a78bfa20', tertiaryTextColor: '#c9cdd8', tertiaryBorderColor: '#a78bfa',
+      lineColor: '#6b7280', textColor: '#c9cdd8', mainBkg: '#1a1d27', nodeBorder: '#60a5fa',
+      clusterBkg: '#0f111700', clusterBorder: '#2a2e3f',
+      noteTextColor: '#c9cdd8', noteBkgColor: '#1a1d27', noteBorderColor: '#2a2e3f',
+      actorTextColor: '#edf0f7', actorBkg: '#1a1d27', actorBorder: '#60a5fa',
+      signalColor: '#6b7280', signalTextColor: '#c9cdd8', sequenceNumberColor: '#60a5fa',
+  }};
+
+  const lightTheme = { theme: 'default', flowchart: shared.flowchart, sequence: shared.sequence,
+    themeVariables: { ...shared.themeVariables,
+      darkMode: false, background: '#ffffff',
+      primaryColor: '#2563eb20', primaryTextColor: '#111827', primaryBorderColor: '#2563eb',
+      secondaryColor: '#16a34a18', secondaryTextColor: '#374151', secondaryBorderColor: '#16a34a',
+      tertiaryColor: '#7c3aed18', tertiaryTextColor: '#374151', tertiaryBorderColor: '#7c3aed',
+      lineColor: '#9ca3af', textColor: '#374151', mainBkg: '#ffffff', nodeBorder: '#2563eb',
+      clusterBkg: '#f8f9fc00', clusterBorder: '#d1d5db',
+      noteTextColor: '#374151', noteBkgColor: '#ffffff', noteBorderColor: '#d1d5db',
+      actorTextColor: '#111827', actorBkg: '#ffffff', actorBorder: '#2563eb',
+      signalColor: '#9ca3af', signalTextColor: '#374151', sequenceNumberColor: '#2563eb',
+  }};
+
+  function isLight() { return document.documentElement.classList.contains('light'); }
+
+  if (isLight()) {
+    for (const d of diagrams) {
+      d.wrapper.innerHTML = d.source.replaceAll('color:#edf0f7', 'color:#111827');
+    }
+  }
+
+  mermaid.initialize({ startOnLoad: true, ...(isLight() ? lightTheme : darkTheme) });
+
+  window.toggleTheme = async function() {
+    const nowLight = document.documentElement.classList.toggle('light');
+    localStorage.setItem('workshop-theme', nowLight ? 'light' : 'dark');
+
+    mermaid.initialize({ startOnLoad: false, ...(nowLight ? lightTheme : darkTheme) });
+    for (const d of diagrams) {
+      d.wrapper.innerHTML = nowLight
+        ? d.source.replaceAll('color:#edf0f7', 'color:#111827')
+        : d.source;
+    }
+    await mermaid.run();
+
+    const btn = document.getElementById('theme-toggle-btn');
+    if (btn) btn.textContent = nowLight ? 'Dark mode' : 'Light mode';
+  };
+</script>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>{{TITLE}}</h1>
+  <p class="subtitle">{{SUBTITLE}}</p>
+</div>
+
+<div class="layout">
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <!-- <a href="#section-id" data-section="section-id">1. Section Name</a> -->
+  </nav>
+</aside>
+
+<!-- ── Main content ── -->
+<main class="main">
+
+<!-- ============================================ -->
+<!-- OVERVIEW SECTIONS -->
+<!-- Use <h2 id="section-id"> for major sections, <h3> for subsections -->
+<!-- Every h2 id must match a data-section in the TOC above -->
+<!-- ============================================ -->
+
+<!--
+  MERMAID DIAGRAM EXAMPLE - Architecture (flowchart):
+
+  <div class="mermaid-wrapper">
+  <pre class="mermaid">
+  graph TD
+      A["Component A"] --> B["Component B"]
+      A --> C["Component C"]
+      style A fill:#60a5fa20,stroke:#60a5fa,color:#edf0f7
+      style B fill:#4ade8020,stroke:#4ade80,color:#edf0f7
+      style C fill:#a78bfa20,stroke:#a78bfa,color:#edf0f7
+  </pre>
+  </div>
+-->
+
+<!--
+  MERMAID DIAGRAM EXAMPLE - Sequence diagram:
+
+  <div class="mermaid-wrapper">
+  <pre class="mermaid">
+  sequenceDiagram
+      participant C as Client
+      participant S as Server
+      C->>S: Request
+      S-->>C: Response
+      rect rgba(96, 165, 250, 0.1)
+          Note over S: Background work
+          S->>S: Process
+      end
+  </pre>
+  </div>
+-->
+
+<!--
+  COMPARISON CARDS EXAMPLE (use instead of Mermaid for tabular data):
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
+    <div style="background: var(--surface); border: 1px solid #60a5fa40; border-radius: 12px; padding: 1.25rem;">
+      <div style="font-weight: 600; color: #60a5fa; margin-bottom: 0.75rem;">Option A</div>
+      <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem;">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text);">Feature</span>
+          <span style="color: #60a5fa; font-weight: 600;">Value</span>
+        </div>
+      </div>
+    </div>
+    <div style="background: var(--surface); border: 1px solid #4ade8040; border-radius: 12px; padding: 1.25rem;">
+      <div style="font-weight: 600; color: #4ade80; margin-bottom: 0.75rem;">Option B</div>
+      ...
+    </div>
+  </div>
+-->
+
+<!--
+  TECH STACK TAGS EXAMPLE:
+
+  <p>
+    <span class="tag tag-blue">Technology</span>
+    <span class="tag tag-green">Framework</span>
+    <span class="tag tag-yellow">Platform</span>
+    <span class="tag tag-purple">AI</span>
+    <span class="tag tag-red">Styling</span>
+  </p>
+-->
+
+<!-- ============================================ -->
+<!-- KEY DECISIONS (wrap in .decisions-grid for 2-col layout) -->
+<!-- ============================================ -->
+
+<!--
+  <div class="decisions-grid">
+    <div class="scenario">
+      <h3>Decision Title</h3>
+      <p><strong>Why:</strong> Reason for the choice.</p>
+      <p><strong>Trade-off:</strong> What you give up.</p>
+    </div>
+    <div class="scenario">
+      <h3>Decision Title</h3>
+      <p><strong>Why:</strong> Reason for the choice.</p>
+      <p><strong>Trade-off:</strong> What you give up.</p>
+    </div>
+  </div>
+-->
+
+<!-- ============================================ -->
+<!-- DESIGN SCENARIOS -->
+<!-- ============================================ -->
+
+<!--
+  SCENARIO TEMPLATE:
+
+  <div class="scenario" id="scenario-1">
+    <div class="scenario-header">
+      <div class="scenario-number">1</div>
+      <div class="scenario-title">Scenario Title</div>
+    </div>
+    <p><span class="tag tag-red">Tag1</span> <span class="tag tag-yellow">Tag2</span></p>
+    <p>Description of the scenario and the challenge it presents.</p>
+
+    <div class="scenario-interact">
+      <p class="scenario-prompt">Think about: hint1, hint2, hint3.</p>
+      <textarea class="notepad" placeholder="Jot down your thoughts before revealing..."></textarea>
+    </div>
+
+    <button class="reveal-btn" onclick="toggleReveal(this)">Reveal Discussion Points</button>
+    <div class="reveal-content">
+      <h3>Analysis heading</h3>
+      <p>Discussion content...</p>
+
+      <div class="deeper">
+        <button class="deeper-btn" onclick="toggleDeeper(this)">Go deeper: subtopic title</button>
+        <div class="deeper-content">
+          <p>Advanced content...</p>
+        </div>
+      </div>
+
+      <div class="discussion">
+        <div class="discussion-label">Discuss with Claude</div>
+        <p>A follow-up question that doesn't have one right answer. Copy your notes and discuss in the terminal.</p>
+      </div>
+    </div>
+  </div>
+-->
+
+<!-- ============================================ -->
+<!-- QUICK-FIRE QUIZ (wrap all quizzes in .quiz-grid) -->
+<!-- ============================================ -->
+
+<!--
+  <div class="quiz-grid">
+
+  <div class="quiz" id="quiz-1">
+    <div class="quiz-label">QUESTION 1 OF N</div>
+    <div class="quiz-question">The question text?</div>
+    <ul class="quiz-options">
+      <li class="quiz-option" data-correct="false" onclick="selectAnswer(this)">
+        <span class="quiz-letter">A</span>
+        <span>Wrong answer</span>
+      </li>
+      <li class="quiz-option" data-correct="true" onclick="selectAnswer(this)">
+        <span class="quiz-letter">B</span>
+        <span>Correct answer</span>
+      </li>
+      <li class="quiz-option" data-correct="false" onclick="selectAnswer(this)">
+        <span class="quiz-letter">C</span>
+        <span>Wrong answer</span>
+      </li>
+      <li class="quiz-option" data-correct="false" onclick="selectAnswer(this)">
+        <span class="quiz-letter">D</span>
+        <span>Wrong answer</span>
+      </li>
+    </ul>
+    <div class="quiz-explanation">
+      <strong>Correct: B.</strong> Explanation of why B is right and why the most tempting wrong answer is wrong.
+    </div>
+  </div>
+
+  </div>
+-->
+
+</main>
+</div><!-- /layout -->
+
+<!-- Score bar -->
+<div class="score-bar">
+  <div class="score-item">
+    <span>Score:</span>
+    <span class="score-value" id="score-correct">0</span>
+    <span>/</span>
+    <span class="score-value" id="score-total">{{QUIZ_COUNT}}</span>
+  </div>
+  <div class="score-item">
+    <span>Scenarios explored:</span>
+    <span class="score-value" id="scenarios-revealed">0</span>
+    <span>/</span>
+    <span>{{SCENARIO_COUNT}}</span>
+  </div>
+  <div class="score-actions">
+    <span class="score-status" id="save-status"></span>
+    <button class="score-btn theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle light/dark mode">Light mode</button>
+    <button class="score-btn" onclick="exportProgress()" title="Export progress to file">Export</button>
+    <button class="score-btn" onclick="document.getElementById('import-file').click()" title="Import progress from file">Import</button>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importProgress(this)">
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'workshop_' + location.pathname.split('/').pop().replace('.html', '');
+let correctCount = 0;
+let answeredCount = 0;
+let scenariosRevealed = 0;
+let saveTimer = null;
+
+/* ── Scroll spy for sidebar TOC ── */
+const tocLinks = document.querySelectorAll('.toc a[data-section]');
+const sectionIds = Array.from(tocLinks).map(a => a.dataset.section);
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`.toc a[data-section="${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px' });
+
+sectionIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el);
+});
+
+/* ── State persistence ── */
+function gatherState() {
+  const notepads = {};
+  document.querySelectorAll('.notepad').forEach((el, i) => {
+    if (el.value) notepads[i] = el.value;
+  });
+
+  const quizzes = {};
+  document.querySelectorAll('.quiz').forEach(quiz => {
+    if (!quiz.classList.contains('quiz-locked')) return;
+    const selected = quiz.querySelector('.quiz-option.correct, .quiz-option.incorrect');
+    if (selected) {
+      const options = Array.from(quiz.querySelectorAll('.quiz-option'));
+      quizzes[quiz.id] = options.indexOf(selected);
+    }
+  });
+
+  const reveals = {};
+  document.querySelectorAll('.reveal-content').forEach((el, i) => {
+    if (el.classList.contains('open')) reveals[i] = true;
+  });
+
+  const deeperDives = {};
+  document.querySelectorAll('.deeper-content').forEach((el, i) => {
+    if (el.classList.contains('open')) deeperDives[i] = true;
+  });
+
+  return { notepads, quizzes, reveals, deeperDives, correctCount, answeredCount, scenariosRevealed };
+}
+
+function applyState(state) {
+  if (state.notepads) {
+    document.querySelectorAll('.notepad').forEach((el, i) => {
+      if (state.notepads[i] !== undefined) el.value = state.notepads[i];
+    });
+  }
+
+  if (state.quizzes) {
+    Object.entries(state.quizzes).forEach(([quizId, optionIndex]) => {
+      const quiz = document.getElementById(quizId);
+      if (!quiz || quiz.classList.contains('quiz-locked')) return;
+      const option = quiz.querySelectorAll('.quiz-option')[optionIndex];
+      if (option) selectAnswer(option, true);
+    });
+  }
+
+  if (state.reveals) {
+    const revealContents = document.querySelectorAll('.reveal-content');
+    Object.entries(state.reveals).forEach(([i, open]) => {
+      if (open && revealContents[i] && !revealContents[i].classList.contains('open')) {
+        const btn = revealContents[i].previousElementSibling;
+        if (btn) toggleReveal(btn, true);
+      }
+    });
+  }
+
+  if (state.deeperDives) {
+    const deeperContents = document.querySelectorAll('.deeper-content');
+    Object.entries(state.deeperDives).forEach(([i, open]) => {
+      if (open && deeperContents[i] && !deeperContents[i].classList.contains('open')) {
+        const btn = deeperContents[i].previousElementSibling;
+        if (btn) toggleDeeper(btn);
+      }
+    });
+  }
+}
+
+function saveToLocalStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gatherState()));
+  } catch (e) {}
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveToLocalStorage, 300);
+}
+
+function loadFromLocalStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) applyState(JSON.parse(raw));
+  } catch (e) {}
+}
+
+function exportProgress() {
+  const blob = new Blob([JSON.stringify(gatherState(), null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = STORAGE_KEY + '-progress.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  const btn = document.querySelector('.score-actions .score-btn');
+  btn.classList.add('saved');
+  setTimeout(() => btn.classList.remove('saved'), 1500);
+  showStatus('Exported');
+}
+
+function importProgress(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const state = JSON.parse(e.target.result);
+      correctCount = 0;
+      answeredCount = 0;
+      scenariosRevealed = 0;
+      document.querySelectorAll('.quiz').forEach(q => {
+        q.classList.remove('quiz-locked');
+        q.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('correct', 'incorrect', 'correct-reveal'));
+        q.querySelector('.quiz-explanation').classList.remove('visible');
+      });
+      document.querySelectorAll('.reveal-content').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.deeper-content').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.reveal-btn').forEach(btn => btn.textContent = 'Reveal Discussion Points');
+      document.getElementById('score-correct').textContent = '0';
+      document.getElementById('scenarios-revealed').textContent = '0';
+      applyState(state);
+      saveToLocalStorage();
+      showStatus('Imported');
+    } catch (err) {
+      showStatus('Invalid file');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function showStatus(msg) {
+  const el = document.getElementById('save-status');
+  el.textContent = msg;
+  setTimeout(() => el.textContent = '', 2000);
+}
+
+function selectAnswer(option, isRestore) {
+  const quiz = option.closest('.quiz');
+  if (quiz.classList.contains('quiz-locked')) return;
+  quiz.classList.add('quiz-locked');
+
+  const isCorrect = option.dataset.correct === 'true';
+
+  if (isCorrect) {
+    option.classList.add('correct');
+    correctCount++;
+  } else {
+    option.classList.add('incorrect');
+    quiz.querySelector('[data-correct="true"]').classList.add('correct-reveal');
+  }
+
+  answeredCount++;
+  quiz.querySelector('.quiz-explanation').classList.add('visible');
+  document.getElementById('score-correct').textContent = correctCount;
+  if (!isRestore) scheduleSave();
+}
+
+function toggleReveal(btn, isRestore) {
+  const content = btn.nextElementSibling;
+  const wasOpen = content.classList.contains('open');
+  content.classList.toggle('open');
+  btn.textContent = wasOpen ? 'Reveal Discussion Points' : 'Hide Discussion Points';
+
+  if (!wasOpen) {
+    scenariosRevealed++;
+    document.getElementById('scenarios-revealed').textContent = scenariosRevealed;
+  }
+  if (!isRestore) scheduleSave();
+}
+
+function toggleDeeper(btn) {
+  const content = btn.nextElementSibling;
+  const wasOpen = content.classList.contains('open');
+  content.classList.toggle('open');
+  btn.textContent = wasOpen
+    ? btn.textContent.replace('Collapse', 'Go deeper')
+    : btn.textContent.replace('Go deeper', 'Collapse');
+  scheduleSave();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadFromLocalStorage();
+  document.querySelectorAll('.notepad').forEach(el => {
+    el.addEventListener('input', scheduleSave);
+  });
+  const btn = document.getElementById('theme-toggle-btn');
+  if (btn && document.documentElement.classList.contains('light')) btn.textContent = 'Dark mode';
+});
+</script>
+
+</body>
+</html>

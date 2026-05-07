@@ -1,0 +1,74 @@
+# =============================================
+# OH MY ZSH CONFIGURATION
+# =============================================
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"
+
+# =============================================
+# ZSH PLUGINS
+# =============================================
+plugins=(
+    git
+    z
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# =============================================
+# CUSTOM FUNCTIONS
+# =============================================
+function github() {
+  git_url=$(git config --get remote.origin.url)
+  git_url=${git_url/git@github.com:/https://github.com/}
+  git_url=${git_url/.git/\/tree/}
+  branch_name=$(git symbolic-ref -q HEAD)
+  branch_name=${branch_name##refs/heads/}
+  branch_name=${branch_name:-HEAD}
+  open "${git_url}${branch_name}"
+}
+
+# =============================================
+# ALIASES
+# =============================================
+# Config/Environment
+alias be="bundle exec"
+alias zh="zed ~/.zshrc"
+alias ghosttyc="zed ~/.config/ghostty/config"
+alias src="source ~/.zshrc"
+
+# System
+alias ss="open -a ScreenSaverEngine.app"
+alias slp="pmset sleepnow"
+alias launchpad="defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock"
+alias gitbr='git rev-parse --abbrev-ref HEAD | pbcopy'
+alias cwd='pwd | pbcopy'
+
+# Claude Code
+alias claude-config="zed ~/.claude"
+
+# =============================================
+# DEVELOPMENT ENVIRONMENT
+# =============================================
+# Ruby environment
+eval "$(rbenv init -)"
+
+# Node Version Manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+
+# VS Code Terminal Shell Integration
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+
+# =============================================
+# ENVIRONMENT VARIABLES
+# =============================================
+export PATH="$(brew --prefix)/sbin:$PATH"
+export PATH="$PATH:/opt/homebrew/opt/coreutils/libexec/gnubin"
+export PATH="$HOME/.local/bin:$PATH"
+export PACT_DO_NOT_TRACK=true
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+# Source work-specific config if it exists
+[[ -f ~/.zshrc.work ]] && source ~/.zshrc.work
