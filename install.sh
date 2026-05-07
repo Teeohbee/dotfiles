@@ -72,6 +72,12 @@ else
   ok "Claude Code installed"
 fi
 
+# --- Directories ---
+echo ""
+info "Directories"
+mkdir -p "$HOME/Dev"
+ok "~/Dev created"
+
 # --- Shell ---
 echo ""
 info "Shell config"
@@ -109,6 +115,5 @@ echo "  1. Generate SSH key: ssh-keygen -t ed25519 -C \"your-email@example.com\"
 echo "  2. Add SSH key to GitHub: gh ssh-key add ~/.ssh/id_ed25519.pub"
 echo "  3. Set git email: git config --global user.email \"your-email@example.com\""
 echo "  4. Install Claude Code plugins: superpowers, playwright"
-echo "  5. Install fonts: JetBrains Mono (VS Code), ZedMono is bundled with Zed"
-echo "  6. Install Monokai Pro theme in VS Code, Zed, and Ghostty"
+echo "  5. Install Monokai Pro theme in VS Code, Zed, and Ghostty"
 echo ""

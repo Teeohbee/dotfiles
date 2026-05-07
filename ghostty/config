@@ -1,2 +1,4 @@
+font-family = JetBrains Mono
+font-size = 14
 theme = Monokai Pro
 keybind = shift+enter=text:\n

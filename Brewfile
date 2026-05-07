@@ -1,3 +1,5 @@
+tap "homebrew/cask-fonts"
+
 # Core utilities
 brew "coreutils"
 brew "git"
@@ -11,6 +13,9 @@ brew "yarn"
 # Media and document processing
 brew "ffmpeg"
 brew "imagemagick"
+
+# Fonts
+cask "font-jetbrains-mono"
 
 # Applications
 cask "1password"
