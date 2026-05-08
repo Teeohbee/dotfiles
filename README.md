@@ -36,7 +36,7 @@ Personal dev environment setup for macOS.
 
 - Installs Homebrew, Oh My Zsh, nvm, Node LTS, and Claude Code
 - Installs packages from the Brewfile
-- Creates `~/Dev`
+- Creates `~/code`
 - Symlinks config files into place (backing up any existing files)
 
 ## What's included

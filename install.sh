@@ -92,8 +92,8 @@ fi
 # --- Directories ---
 echo ""
 info "Directories"
-mkdir -p "$HOME/Dev"
-ok "~/Dev created"
+mkdir -p "$HOME/code"
+ok "~/code created"
 
 # --- Shell ---
 echo ""
