@@ -2,20 +2,46 @@
 
 Personal dev environment setup for macOS.
 
-## Install
+## Fresh machine setup
 
-```bash
-git clone git@github.com:Teeohbee/dotfiles.git ~/.dotfiles
-~/.dotfiles/install.sh
-```
+1. Install Xcode Command Line Tools:
+   ```bash
+   xcode-select --install
+   ```
 
-The install script will:
-- Install Homebrew, Oh My Zsh, nvm, Node LTS, and Claude Code if not present
-- Install packages from the Brewfile
-- Create `~/Dev`
-- Symlink config files into place (backing up any existing files)
+2. Clone and run the installer:
+   ```bash
+   git clone https://github.com/Teeohbee/dotfiles.git ~/.dotfiles
+   ~/.dotfiles/install.sh
+   ```
+
+3. Set up SSH and git identity:
+   ```bash
+   ssh-keygen -t ed25519 -C "your-email@example.com"
+   gh ssh-key add ~/.ssh/id_ed25519.pub
+   git config --global user.email "your-email@example.com"
+   ```
+
+4. Switch the dotfiles remote to SSH:
+   ```bash
+   cd ~/.dotfiles
+   git remote set-url origin git@github.com:Teeohbee/dotfiles.git
+   ```
+
+5. Install Claude Code plugins: superpowers, playwright
+
+6. Install Monokai Pro theme in Zed and Ghostty
+
+## What the installer does
+
+- Installs Homebrew, Oh My Zsh, nvm, Node LTS, and Claude Code
+- Installs packages from the Brewfile
+- Creates `~/Dev`
+- Symlinks config files into place (backing up any existing files)
 
 ## What's included
+
+See [APPLICATIONS.md](APPLICATIONS.md) for details on each app, why it's included, and open-source credentials.
 
 | Directory | What |
 |-----------|------|
@@ -24,14 +50,6 @@ The install script will:
 | `ghostty/` | JetBrains Mono, Monokai Pro |
 | `claude/` | CLAUDE.md, settings, skills (autoskill, interactive-learning) |
 | `Brewfile` | Homebrew packages and casks |
-
-## After install
-
-1. Generate SSH key: `ssh-keygen -t ed25519 -C "your-email"`
-2. Add to GitHub: `gh ssh-key add ~/.ssh/id_ed25519.pub`
-3. Set git email: `git config --global user.email "your-email"`
-4. Install Claude Code plugins: superpowers, playwright
-5. Install Monokai Pro theme in Zed and Ghostty
 
 ## Work machine
 
