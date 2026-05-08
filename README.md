@@ -10,7 +10,7 @@ git clone git@github.com:Teeohbee/dotfiles.git ~/.dotfiles
 ```
 
 The install script will:
-- Install Homebrew, Oh My Zsh, and Claude Code if not present
+- Install Homebrew, Oh My Zsh, nvm, Node LTS, and Claude Code if not present
 - Install packages from the Brewfile
 - Create `~/Dev`
 - Symlink config files into place (backing up any existing files)
@@ -31,7 +31,7 @@ The install script will:
 2. Add to GitHub: `gh ssh-key add ~/.ssh/id_ed25519.pub`
 3. Set git email: `git config --global user.email "your-email"`
 4. Install Claude Code plugins: superpowers, playwright
-5. Install Monokai Pro theme in editors and Ghostty
+5. Install Monokai Pro theme in Zed and Ghostty
 
 ## Work machine
 

@@ -1,5 +1,3 @@
-tap "homebrew/cask-fonts"
-
 # Core utilities
 brew "coreutils"
 brew "git"
@@ -7,8 +5,6 @@ brew "gh"
 
 # Languages and version managers
 brew "rbenv"
-brew "nvm"
-brew "yarn"
 
 # Media and document processing
 brew "ffmpeg"
@@ -19,8 +15,11 @@ cask "font-jetbrains-mono"
 
 # Applications
 cask "1password"
-cask "arc"
+cask "firefox"
 cask "ghostty"
+cask "iina"
+cask "pearcleaner"
 cask "spotify"
-cask "visual-studio-code"
+cask "thaw"
+cask "transmission"
 cask "zed"

@@ -62,6 +62,23 @@ else
   ok "Oh My Zsh installed"
 fi
 
+# --- nvm ---
+echo ""
+if [ -d "$HOME/.nvm" ]; then
+  ok "nvm already installed"
+else
+  info "Installing nvm"
+  PROFILE=/dev/null bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh)"
+  ok "nvm installed"
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+info "Installing Node LTS via nvm"
+nvm install --lts
+ok "Node $(node --version) installed"
+
 # --- Claude Code ---
 echo ""
 if command -v claude &>/dev/null; then
@@ -115,5 +132,5 @@ echo "  1. Generate SSH key: ssh-keygen -t ed25519 -C \"your-email@example.com\"
 echo "  2. Add SSH key to GitHub: gh ssh-key add ~/.ssh/id_ed25519.pub"
 echo "  3. Set git email: git config --global user.email \"your-email@example.com\""
 echo "  4. Install Claude Code plugins: superpowers, playwright"
-echo "  5. Install Monokai Pro theme in VS Code, Zed, and Ghostty"
+echo "  5. Install Monokai Pro theme in Zed and Ghostty"
 echo ""
