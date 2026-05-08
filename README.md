@@ -18,6 +18,7 @@ Personal dev environment setup for macOS.
 3. Set up SSH and git identity:
    ```bash
    ssh-keygen -t ed25519 -C "your-email@example.com"
+   ssh-add --apple-use-keychain ~/.ssh/id_ed25519
    gh ssh-key add ~/.ssh/id_ed25519.pub
    git config --global user.email "your-email@example.com"
    ```
@@ -37,7 +38,7 @@ Personal dev environment setup for macOS.
 - Installs Homebrew, Oh My Zsh, nvm, Node LTS, and Claude Code
 - Installs packages from the Brewfile
 - Creates `~/code`
-- Symlinks config files into place (backing up any existing files)
+- Symlinks config files into place (backing up any existing files), including `~/.ssh/config`
 
 ## What's included
 
@@ -47,6 +48,7 @@ See [APPLICATIONS.md](APPLICATIONS.md) for details on each app, why it's include
 |-----------|------|
 | `shell/` | zshrc (Oh My Zsh, aliases, rbenv, nvm), zprofile |
 | `git/` | gitconfig (aliases, LFS, default branch), global ignore |
+| `ssh/` | SSH config (Keychain integration, GitHub identity) |
 | `ghostty/` | JetBrains Mono, Monokai Pro |
 | `claude/` | CLAUDE.md, settings, skills (autoskill, interactive-learning) |
 | `Brewfile` | Homebrew packages and casks |
