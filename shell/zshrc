@@ -46,6 +46,11 @@ alias cwd='pwd | pbcopy'
 # Claude Code
 alias claude-config="zed ~/.claude"
 
+# Godot
+gut() {
+  godot --headless -s addons/gut/gut_cmdln.gd ${1:+-gtest=$1} -gdir=res://tests -ginclude_subdirs -gexit 2>&1
+}
+
 # =============================================
 # DEVELOPMENT ENVIRONMENT
 # =============================================
