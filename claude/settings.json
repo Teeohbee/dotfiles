@@ -18,12 +18,22 @@
     "ask": [],
     "defaultMode": "default"
   },
-  "model": "claude-opus-4-6",
+  "skillOverrides": {
+    "superpowers:using-git-worktrees": "user-invocable-only"
+  },
   "enabledPlugins": {
     "playwright@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
-  "skipAutoPermissionPrompt": true
+  "effortLevel": "high",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "theme": "dark",
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }
