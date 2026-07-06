@@ -121,7 +121,9 @@ backup_and_link "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.jso
 
 # Skills
 backup_and_link "$DOTFILES_DIR/claude/skills/autoskill" "$HOME/.claude/skills/autoskill"
+backup_and_link "$DOTFILES_DIR/claude/skills/grill-me" "$HOME/.claude/skills/grill-me"
 backup_and_link "$DOTFILES_DIR/claude/skills/interactive-learning" "$HOME/.claude/skills/interactive-learning"
+backup_and_link "$DOTFILES_DIR/claude/skills/tutor" "$HOME/.claude/skills/tutor"
 
 # --- Summary ---
 echo ""
