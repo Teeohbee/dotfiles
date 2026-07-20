@@ -15,12 +15,11 @@ Personal dev environment setup for macOS.
    ~/.dotfiles/install.sh
    ```
 
-3. Set up SSH and git identity:
+3. Set up SSH:
    ```bash
    ssh-keygen -t ed25519 -C "your-email@example.com"
    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
    gh ssh-key add ~/.ssh/id_ed25519.pub
-   git config --global user.email "your-email@example.com"
    ```
 
 4. Switch the dotfiles remote to SSH:
