@@ -19,6 +19,7 @@ Personal dev environment setup for macOS.
    ```bash
    ssh-keygen -t ed25519 -C "your-email@example.com"
    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+   gh auth login
    gh ssh-key add ~/.ssh/id_ed25519.pub
    ```
 
