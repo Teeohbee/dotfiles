@@ -33,6 +33,11 @@ Personal dev environment setup for macOS.
 
 6. Install Monokai Pro theme in Zed
 
+7. Enable the Claude Code status line by adding this to `~/.claude/settings.json`:
+   ```json
+   "statusLine": { "type": "command", "command": "bash $HOME/.claude/statusline.sh" }
+   ```
+
 ## What the installer does
 
 - Installs Homebrew, Oh My Zsh, nvm, Node LTS, and Claude Code
@@ -50,5 +55,5 @@ See [APPLICATIONS.md](APPLICATIONS.md) for details on each app, why it's include
 | `git/` | gitconfig (aliases, LFS, default branch), global ignore |
 | `ssh/` | SSH config (Keychain integration, GitHub identity) |
 | `ghostty/` | JetBrains Mono, Monokai Pro |
-| `claude/` | CLAUDE.md, skills (autoskill, grill-me, interactive-learning, tutor) |
+| `claude/` | CLAUDE.md, statusline.sh, skills (autoskill, grill-me, interactive-learning, tutor) |
 | `Brewfile` | Homebrew packages and casks |

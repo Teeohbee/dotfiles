@@ -117,6 +117,7 @@ backup_and_link "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
 # --- Claude Code ---
 info "Claude Code config"
 backup_and_link "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+backup_and_link "$DOTFILES_DIR/claude/statusline.sh" "$HOME/.claude/statusline.sh"
 
 # Skills
 backup_and_link "$DOTFILES_DIR/claude/skills/autoskill" "$HOME/.claude/skills/autoskill"
@@ -139,4 +140,6 @@ echo "  3. Authenticate gh: gh auth login"
 echo "  4. Add SSH key to GitHub: gh ssh-key add ~/.ssh/id_ed25519.pub"
 echo "  5. Install Claude Code plugins: superpowers, playwright"
 echo "  6. Install Monokai Pro theme in Zed"
+echo "  7. Enable the Claude Code status line by adding this to ~/.claude/settings.json:"
+echo "       \"statusLine\": { \"type\": \"command\", \"command\": \"bash \$HOME/.claude/statusline.sh\" }"
 echo ""
