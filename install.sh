@@ -117,7 +117,6 @@ backup_and_link "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
 # --- Claude Code ---
 info "Claude Code config"
 backup_and_link "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
-backup_and_link "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 
 # Skills
 backup_and_link "$DOTFILES_DIR/claude/skills/autoskill" "$HOME/.claude/skills/autoskill"
@@ -139,5 +138,5 @@ echo "  2. Load key into Keychain: ssh-add --apple-use-keychain ~/.ssh/id_ed2551
 echo "  3. Add SSH key to GitHub: gh ssh-key add ~/.ssh/id_ed25519.pub"
 echo "  4. Set git email: git config --global user.email \"your-email@example.com\""
 echo "  5. Install Claude Code plugins: superpowers, playwright"
-echo "  6. Install Monokai Pro theme in Zed and Ghostty"
+echo "  6. Install Monokai Pro theme in Zed"
 echo ""

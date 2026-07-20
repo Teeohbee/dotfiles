@@ -31,7 +31,7 @@ Personal dev environment setup for macOS.
 
 5. Install Claude Code plugins: superpowers, playwright
 
-6. Install Monokai Pro theme in Zed and Ghostty
+6. Install Monokai Pro theme in Zed
 
 ## What the installer does
 
@@ -50,9 +50,5 @@ See [APPLICATIONS.md](APPLICATIONS.md) for details on each app, why it's include
 | `git/` | gitconfig (aliases, LFS, default branch), global ignore |
 | `ssh/` | SSH config (Keychain integration, GitHub identity) |
 | `ghostty/` | JetBrains Mono, Monokai Pro |
-| `claude/` | CLAUDE.md, settings, skills (autoskill, interactive-learning) |
+| `claude/` | CLAUDE.md, skills (autoskill, grill-me, interactive-learning, tutor) |
 | `Brewfile` | Homebrew packages and casks |
-
-## Work machine
-
-The zshrc sources `~/.zshrc.work` if it exists - put machine-specific config there.

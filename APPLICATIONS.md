@@ -11,7 +11,6 @@ What's in the Brewfile and why.
 | [gh](https://github.com/cli/cli) | GitHub CLI - PRs, issues, repos from the terminal | MIT | cli/cli |
 | [rbenv](https://github.com/rbenv/rbenv) | Ruby version manager | MIT | rbenv/rbenv |
 | [ffmpeg](https://github.com/FFmpeg/FFmpeg) | Audio/video conversion and processing | LGPL-2.1 / GPL-2.0 | FFmpeg/FFmpeg |
-| [ImageMagick](https://github.com/ImageMagick/ImageMagick) | Image manipulation and conversion | Apache-2.0 | ImageMagick/ImageMagick |
 
 ## Fonts
 
@@ -66,18 +65,6 @@ Menu bar manager for macOS - hide and organise menu bar icons around the notch.
 | **Why** | Active fork of Ice (which went dormant). Same features, actively maintained, macOS Tahoe compatible. |
 | **License** | GPL-3.0 |
 | **Source** | [stonerl/Thaw](https://github.com/stonerl/Thaw) |
-
----
-
-### <img src="https://raw.githubusercontent.com/iina/iina/develop/iina/Assets.xcassets/AppIcon.appiconset/icon_512x512.png" width="28" /> IINA
-
-Modern media player optimised for macOS and Apple Silicon.
-
-| | |
-|---|---|
-| **Why** | Best media player on Mac. Hardware-accelerated, native UI, supports everything. |
-| **License** | GPL-3.0 |
-| **Source** | [iina/iina](https://github.com/iina/iina) |
 
 ---
 

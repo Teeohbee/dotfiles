@@ -71,6 +71,3 @@ export PATH="$HOME/.local/bin:$PATH"
 export PACT_DO_NOT_TRACK=true
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_AUTO_UPDATE=1
-
-# Source work-specific config if it exists
-[[ -f ~/.zshrc.work ]] && source ~/.zshrc.work

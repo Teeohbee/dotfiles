@@ -8,7 +8,6 @@ brew "rbenv"
 
 # Media and document processing
 brew "ffmpeg"
-brew "imagemagick"
 
 # Fonts
 cask "font-jetbrains-mono"
@@ -17,7 +16,6 @@ cask "font-jetbrains-mono"
 cask "1password"
 cask "firefox"
 cask "ghostty"
-cask "iina"
 cask "pearcleaner"
 cask "spotify"
 cask "thaw"
