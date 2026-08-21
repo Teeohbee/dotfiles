@@ -31,15 +31,15 @@ GPU-accelerated terminal emulator written in Zig.
 
 ---
 
-### <img src="https://raw.githubusercontent.com/zed-industries/zed/main/crates/zed/resources/app-icon.png" width="28" /> Zed
+### <img src="https://codeberg.org/GramEditor/gram/raw/branch/main/crates/gram/resources/app-icon.png" width="28" /> Gram
 
-High-performance code editor from the creators of Atom and Tree-sitter.
+Code editor focused on stability, without AI, subscriptions, or telemetry.
 
 | | |
 |---|---|
 | **Why** | Lightweight companion to Claude Code for visual browsing, quick edits, and diffs. Opens instantly, uses a fraction of VS Code's memory. |
-| **License** | AGPL-3.0 (editor) / Apache-2.0 (GPUI framework) |
-| **Source** | [zed-industries/zed](https://github.com/zed-industries/zed) |
+| **License** | GPL-3.0 / Apache-2.0 |
+| **Source** | [GramEditor/gram](https://codeberg.org/GramEditor/gram) |
 
 ---
 

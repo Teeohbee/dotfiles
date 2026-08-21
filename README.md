@@ -31,9 +31,7 @@ Personal dev environment setup for macOS.
 
 5. Install Claude Code plugins: superpowers, playwright
 
-6. Install Monokai Pro theme in Zed
-
-7. Enable the Claude Code status line by adding this to `~/.claude/settings.json`:
+6. Enable the Claude Code status line by adding this to `~/.claude/settings.json`:
    ```json
    "statusLine": { "type": "command", "command": "bash $HOME/.claude/statusline.sh" }
    ```

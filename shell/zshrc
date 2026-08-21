@@ -32,8 +32,8 @@ function github() {
 # =============================================
 # Config/Environment
 alias be="bundle exec"
-alias zh="zed ~/.zshrc"
-alias ghosttyc="zed ~/.config/ghostty/config"
+alias zh="gram ~/.zshrc"
+alias ghosttyc="gram ~/.config/ghostty/config"
 alias src="source ~/.zshrc"
 
 # System
@@ -44,7 +44,7 @@ alias gitbr='git rev-parse --abbrev-ref HEAD | pbcopy'
 alias cwd='pwd | pbcopy'
 
 # Claude Code
-alias claude-config="zed ~/.claude"
+alias claude-config="gram ~/.claude"
 
 # Godot
 gut() {

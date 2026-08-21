@@ -139,7 +139,6 @@ echo "  2. Load key into Keychain: ssh-add --apple-use-keychain ~/.ssh/id_ed2551
 echo "  3. Authenticate gh: gh auth login"
 echo "  4. Add SSH key to GitHub: gh ssh-key add ~/.ssh/id_ed25519.pub"
 echo "  5. Install Claude Code plugins: superpowers, playwright"
-echo "  6. Install Monokai Pro theme in Zed"
-echo "  7. Enable the Claude Code status line by adding this to ~/.claude/settings.json:"
+echo "  6. Enable the Claude Code status line by adding this to ~/.claude/settings.json:"
 echo "       \"statusLine\": { \"type\": \"command\", \"command\": \"bash \$HOME/.claude/statusline.sh\" }"
 echo ""
