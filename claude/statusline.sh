@@ -46,6 +46,7 @@ B_TRACK='⣿'                # empty cell - same glyph, rendered dim
 # Icons. Nerd Font versions need a patched font; set USE_NERD_FONT=0 to fall back
 # to plain Unicode if they render as tofu boxes. Built via hex bytes for bash 3.2.
 USE_NERD_FONT=1
+[ "$TERM_PROGRAM" = "iTerm.app" ] && USE_NERD_FONT=0
 if [ "$USE_NERD_FONT" = 1 ]; then
   GIT_ICON=$(printf '\xee\x9c\xa5')    # U+E725 nf-dev-git_branch
   MODEL_ICON=$(printf '\xef\x8b\x9b')  # U+F2DB nf-fa-microchip
