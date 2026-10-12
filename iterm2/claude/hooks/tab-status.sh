@@ -1,6 +1,8 @@
 #!/bin/bash
 # Sets the iTerm tab status (OSC 21337) from Claude Code hook events.
 
+[ "$TERM_PROGRAM" = iTerm.app ] || exit 0
+
 input=$(cat)
 IFS=$'\x1f' read -r event cwd session < <(
   printf '%s' "$input" | jq -r '[.hook_event_name, .cwd, .session_id] | map(. // "") | join("\u001f")'
