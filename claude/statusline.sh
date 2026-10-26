@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Code status line - neon-noir edition
+# Claude Code status line - Monokai Pro edition
 #
 # Segments (in order): working dir | git branch/dirty | model | context gauge | 5h window gauge
 # Reads the status line JSON from stdin. Requires: bash, jq, git, awk.
@@ -13,7 +13,7 @@ barista_bridge=~/Projects/barista/hooks/status_bridge.py
 GAUGE_CELLS=10             # width of each braille meter, in cells
 
 # ---- Colour depth -----------------------------------------------------------
-# Truecolour gives real neon; flip USE_TRUECOLOR=0 to force the 256-colour palette.
+# Truecolour gives the exact palette; flip USE_TRUECOLOR=0 to force the 256-colour palette.
 USE_TRUECOLOR=1
 case "$COLORTERM" in
   truecolor|24bit) : ;;                              # explicitly supported
@@ -33,14 +33,14 @@ fg() {
   fi
 }
 
-# ---- Neon palette -----------------------------------------------------------
-NEON_CYAN=$(fg    0 240 255  51)   # working directory
-NEON_GREEN=$(fg  57 255  20  47)   # git clean / low usage
-NEON_AMBER=$(fg 255 176   0 214)   # git dirty / mid usage
-NEON_RED=$(fg   255  42  74 197)   # git conflict / high usage
-NEON_PURPLE=$(fg 181 120 255 141)  # model
+# ---- Monokai Pro palette ---------------------------------------------------
+CYAN=$(fg    120 220 232 117)   # working directory
+GREEN=$(fg   169 220 118 150)   # git clean / low usage
+AMBER=$(fg   255 216 102 221)   # git dirty / mid usage
+RED=$(fg     255  97 136 204)   # git conflict / high usage
+PURPLE=$(fg  171 157 242 141)   # model
 GIT_FG=$(fg     120 190 130  108)  # git branch - softer sage, easier on the eye
-SEPC=$(fg       130  95 200  60)   # separator
+SEPC=$(fg    114 112 114 243)   # separator
 
 # ---- Glyphs -----------------------------------------------------------------
 # Braille meter glyphs (literal UTF-8 so they work on macOS bash 3.2).
@@ -62,9 +62,9 @@ fi
 # Gradient stops for a scheme: "r0 g0 b0  r1 g1 b1  r2 g2 b2" (low / mid / high).
 grad_stops() {
   case "$1" in
-    toxic)     echo "90 190 75   185 195 55  205 115 45" ;;  # muted lime -> olive-yellow -> burnt orange
+    usage)     echo "169 220 118  255 216 102  255 97 136" ;;  # green -> yellow -> red
     synthwave) echo "170 95 255   255 70 180  255 155 70" ;;  # electric violet -> hot pink -> sunset orange
-    *)         echo "0 240 255  255 60 200  255 40 60" ;;   # neon: cyan -> magenta -> red
+    *)         echo "120 220 232  171 157 242  255 97 136" ;;  # cyan -> purple -> red
   esac
 }
 
@@ -90,9 +90,9 @@ grad_colour() {
 usage_colour() {
   local u
   u=$(printf '%.0f' "$1")
-  if [ "$u" -ge 80 ]; then printf '%s' "$NEON_RED"
-  elif [ "$u" -ge 50 ]; then printf '%s' "$NEON_AMBER"
-  else printf '%s' "$NEON_GREEN"; fi
+  if [ "$u" -ge 80 ]; then printf '%s' "$RED"
+  elif [ "$u" -ge 50 ]; then printf '%s' "$AMBER"
+  else printf '%s' "$GREEN"; fi
 }
 
 # Render the meter: $1=percent (0-100), $2=cell count, $3=scheme.
@@ -114,7 +114,7 @@ braille_bar() {
           else       { t=(f-0.5)/0.5; r=c[4]+(c[7]-c[4])*t; gg=c[5]+(c[8]-c[5])*t; b=c[6]+(c[9]-c[6])*t }
           printf "\033[38;2;%d;%d;%dm%s", r, gg, b, full;
         } else {
-          printf "\033[38;2;70;72;96m%s", track;   # dim rail
+          printf "\033[38;2;64;62;65m%s", track;   # dim rail
         }
       }
       printf "\033[0m";
@@ -178,9 +178,9 @@ BOLD=$'\033[1m'
 leaf="${dir_display##*/}"
 parent="${dir_display%/*}"
 if [ "$parent" = "$dir_display" ]; then
-  dir_segment="${NEON_CYAN}${BOLD}${dir_display}${RESET}"                                   # no slash - all leaf
+  dir_segment="${CYAN}${BOLD}${dir_display}${RESET}"                                   # no slash - all leaf
 else
-  dir_segment="${DIM}${NEON_CYAN}${parent}/${RESET}${NEON_CYAN}${BOLD}${leaf}${RESET}"
+  dir_segment="${DIM}${CYAN}${parent}/${RESET}${CYAN}${BOLD}${leaf}${RESET}"
 fi
 
 # ---- 2. Git branch (name only) ----------------------------------------------
@@ -194,7 +194,7 @@ branch=$(git -C "$cwd" --no-optional-locks symbolic-ref --quiet --short HEAD 2>/
 # ---- 3. Model display name (drop the parenthetical, e.g. "(1M context)") ----
 model="${model% (*}"
 model_segment=""
-[ -n "$model" ] && model_segment="${NEON_PURPLE}${MODEL_ICON} ${model}${RESET}"
+[ -n "$model" ] && model_segment="${PURPLE}${MODEL_ICON} ${model}${RESET}"
 
 # ---- 4. Context window usage gauge ------------------------------------------
 # Prefer used_percentage; fall back to 100-remaining, then to tokens/size.
@@ -208,7 +208,7 @@ fi
 context_segment=""
 if [ -n "$ctx_used" ]; then
   ctx_used=$(printf '%.0f' "$ctx_used")
-  lc=$(grad_colour "$ctx_used" neon)
+  lc=$(grad_colour "$ctx_used" context)
 
   # Label with total tokens used (e.g. 74k). Fall back to a percentage when the
   # count isn't positive yet - a fresh session reports 0 tokens, and a bare "0"
@@ -219,15 +219,15 @@ if [ -n "$ctx_used" ]; then
     ctx_label="${ctx_used}%"
   fi
 
-  context_segment="${DIM}CTX${RESET} $(braille_bar "$ctx_used" "$GAUGE_CELLS" neon) ${lc}${ctx_label}${RESET}"
+  context_segment="${DIM}CTX${RESET} $(braille_bar "$ctx_used" "$GAUGE_CELLS" context) ${lc}${ctx_label}${RESET}"
 fi
 
 # ---- 5. 5-hour rate-limit window usage gauge --------------------------------
 window_segment=""
 if [ -n "$win_used" ]; then
   win_used=$(printf '%.0f' "$win_used")
-  wl=$(grad_colour "$win_used" toxic)
-  window_segment="${DIM}5H${RESET} $(braille_bar "$win_used" "$GAUGE_CELLS" toxic) ${wl}${win_used}%${RESET}"
+  wl=$(grad_colour "$win_used" usage)
+  window_segment="${DIM}5H${RESET} $(braille_bar "$win_used" "$GAUGE_CELLS" usage) ${wl}${win_used}%${RESET}"
 fi
 
 # ---- Assemble ---------------------------------------------------------------
