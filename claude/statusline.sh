@@ -6,6 +6,10 @@
 
 input=$(cat)
 
+# Hand the payload to Barista (session panel) when it's checked out; never slows or breaks this line.
+barista_bridge=~/Projects/barista/hooks/status_bridge.py
+[ -f "$barista_bridge" ] && { printf '%s' "$input" | python3 "$barista_bridge" >/dev/null 2>&1 & }
+
 GAUGE_CELLS=10             # width of each braille meter, in cells
 
 # ---- Colour depth -----------------------------------------------------------
