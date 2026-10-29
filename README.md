@@ -53,5 +53,5 @@ See [APPLICATIONS.md](APPLICATIONS.md) for details on each app, why it's include
 | `git/` | gitconfig (aliases, LFS, default branch), global ignore |
 | `ssh/` | SSH config (Keychain integration, GitHub identity) |
 | `ghostty/` | JetBrains Mono, Monokai Pro |
-| `claude/` | CLAUDE.md, statusline.sh, skills (autoskill, grill-me, interactive-learning, tutor) |
+| `claude/` | CLAUDE.md, statusline.sh, skills (autoskill, grill-me, handoff, interactive-learning, tutor) |
 | `Brewfile` | Homebrew packages and casks |
